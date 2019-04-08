@@ -5,8 +5,8 @@
 // eslint-disable-next-line getter-return
 // eslint-disable-next-line no-compare-neg-zero
 import React, { Component } from "react";
-import FlipMove from "react-flip-move";
 import './TodoItems.css';
+import Tags from '../Tags/Tags';
 
 class TodoItems extends Component {
 
@@ -18,8 +18,10 @@ class TodoItems extends Component {
         super(props);
         this.state = {
             checked: false,
+            tags: [],
         }
         this.createTasks = this.createTasks.bind(this);
+        this.addTag = this.addTag.bind(this);
     }
 
     // delete(key) {
@@ -32,16 +34,46 @@ class TodoItems extends Component {
         document.getElementById(key).style.textDecoration = 'line-through';
     }
 
+
+    addTag(e) {
+        if (this._inputElement.value !== "") {
+            var newItem = this._inputElement.value;
+        
+            this.setState((prevState) => {
+                return {
+                    tags: prevState.tags.concat(newItem)
+                };
+            });
+
+            this._inputElement.value = "";
+        }    
+        e.preventDefault();
+
+    }
+
     createTasks(item) {
-        let checkbox_class = this.state.checked ? "before" : "after";
         return <li key={item.key}>
             <div id={item.key}>
                 <input type="checkbox"
-                    // className={checkbox_class}
-                    //    onChange={this.handleCheckboxChange}
                     onClick={() => this.strike(item.key)}
                 />
                 {item.text}
+                {/* <li>{item.tags}</li> */}
+                {/* {item.tags.map(t => {
+                    return <li>{t}</li>
+                })} */}
+
+                <div className="header">
+                    <form onSubmit={this.addTag}>
+                        <input ref={(a) => this._inputElement = a} placeholder="enter tag">
+                        </input>
+                        <button type="submit">add</button>
+                    </form>
+                </div>
+
+                {/* {item.tags}={this.state.tags};
+                {console.log(item.tags)}; */}
+                <Tags entries={item} />
             </div>
         </li>
     }
@@ -52,9 +84,7 @@ class TodoItems extends Component {
 
         return (
             <ul className="theList">
-                <FlipMove duration={500} easing="ease-out">
-                    {listItems}
-                </FlipMove>
+                {listItems}
             </ul>
         );
     }

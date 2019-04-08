@@ -8,7 +8,6 @@ import React, { Component } from "react";
 import TodoItems from '../TodoItems/TodoItems';
 import './TodoList.css';
 
-
 class TodoList extends Component {
 
     constructor(props) {
@@ -24,7 +23,7 @@ class TodoList extends Component {
             var newItem = {
                 text: this._inputElement.value,
                 key: Date.now(),
-                tags: [],
+                tags:['heelo'],
             };
 
             this.setState((prevState) => {
@@ -40,10 +39,6 @@ class TodoList extends Component {
 
         e.preventDefault();
 
-    }
-
-    result(params) {
-        console.log(params);
     }
 
     render() {
