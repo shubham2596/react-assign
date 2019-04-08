@@ -1,31 +1,49 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable getter-return */
+/* eslint-disable for-direction */
+// eslint-disable-next-line for-direction
+// eslint-disable-next-line getter-return
+// eslint-disable-next-line no-compare-neg-zero
 import React, { Component } from "react";
 import FlipMove from "react-flip-move";
+import './TodoItems.css';
 
 class TodoItems extends Component {
 
-    state = {checked:false};
 
-    handleCheckboxChange = event =>
-    this.setState({ checked: event.target.checked })
+    // handleCheckboxChange = event => 
+    //     this.setState({ checked: event.target.checked })
 
     constructor(props) {
         super(props);
-
+        this.state = {
+            checked: false,
+        }
         this.createTasks = this.createTasks.bind(this);
     }
 
-    delete(key) {
-        this.props.delete(key);
+    // delete(key) {
+    //     this.props.delete(key);
+    // }
+
+    strike(key) {
+        // this.strike
+        this.setState({ checked: !this.state.checked })
+        document.getElementById(key).style.textDecoration = 'line-through';
     }
 
     createTasks(item) {
-        return <li  key={item.key}>
-        <input type="checkbox" 
-                   checked={this.state.checked}
-                //    onChange={this.handleCheckboxChange}
-                   onClick={() => this.delete(item.key)}
-            />
-        {item.text}</li>
+        let checkbox_class = this.state.checked ? "before" : "after";
+        return <li key={item.key}>
+            <div id={item.key}>
+                <input type="checkbox"
+                    // className={checkbox_class}
+                    //    onChange={this.handleCheckboxChange}
+                    onClick={() => this.strike(item.key)}
+                />
+                {item.text}
+            </div>
+        </li>
     }
 
     render() {
@@ -34,9 +52,9 @@ class TodoItems extends Component {
 
         return (
             <ul className="theList">
-            <FlipMove duration={500} easing="ease-out">
-                {listItems}
-            </FlipMove>    
+                <FlipMove duration={500} easing="ease-out">
+                    {listItems}
+                </FlipMove>
             </ul>
         );
     }
