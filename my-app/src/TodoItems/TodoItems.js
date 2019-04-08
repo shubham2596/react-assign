@@ -3,6 +3,11 @@ import FlipMove from "react-flip-move";
 
 class TodoItems extends Component {
 
+    state = {checked:false};
+
+    handleCheckboxChange = event =>
+    this.setState({ checked: event.target.checked })
+
     constructor(props) {
         super(props);
 
@@ -14,7 +19,13 @@ class TodoItems extends Component {
     }
 
     createTasks(item) {
-        return <li onClick={() => this.delete(item.key)} key={item.key}>{item.text}</li>
+        return <li  key={item.key}>
+        <input type="checkbox" 
+                   checked={this.state.checked}
+                //    onChange={this.handleCheckboxChange}
+                   onClick={() => this.delete(item.key)}
+            />
+        {item.text}</li>
     }
 
     render() {
@@ -23,7 +34,7 @@ class TodoItems extends Component {
 
         return (
             <ul className="theList">
-            <FlipMove duration={250} easing="ease-out">
+            <FlipMove duration={500} easing="ease-out">
                 {listItems}
             </FlipMove>    
             </ul>
