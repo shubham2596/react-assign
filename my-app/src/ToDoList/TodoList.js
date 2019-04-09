@@ -42,11 +42,17 @@ class TodoList extends Component {
 
     }
 
-    appendTag (item, id) {
+    appendTag (id, newItem) {
         let items = this.state.items;
-        items[id] = item;
+        var item = items[id];
+        item.tags = item.tags.concat(newItem)
+        var oldIndex = items.indexOf(item);
+        var itemClone = items.slice();
+        itemClone.splice(oldIndex,1);
+        itemClone.splice(oldIndex,0,item);
+        
         this.setState({
-            items
+            items : itemClone
         })
     }
 

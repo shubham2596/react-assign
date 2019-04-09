@@ -15,8 +15,10 @@ class TodoItems extends Component {
         this.state = {
             checked: false,
             tags: [],
+            value:null,
+            _inputElemets: [],
+            items: [],
         }
-        this.createTasks = this.createTasks.bind(this);
         this.addTag = this.addTag.bind(this);
     }
 
@@ -35,47 +37,48 @@ class TodoItems extends Component {
 
 
     addTag(e) {
-        if (this._inputElement.value !== "") {
-            var newItem = this._inputElement.value;
-            var id = this._inputElement.dataset.id;
-            var item = this.item;
-            item.tags = item.tags.concat(newItem)
-            this.props.addTag(item, id);
-        }
         e.preventDefault();
-
+            var inputElement = e.target.childNodes[0];
+            var newItem = inputElement.value;
+            var id = e.target.dataset.id;
+            this.props.addTag(id, newItem);
     }
-
-    createTasks(item, i) {
-        return <li key={item.key}>
-            <div>
-                <input type="checkbox"
-                    onClick={() => this.strike(item)}
-                />
-                <div id={item.key}>
-                    {item.text}
-                </div>
-                <div className="header">
-                    <form onSubmit={this.addTag}>
-                        <input data-id={i} ref={(a) => {
-                            this._inputElement = a
-                            this.item = item
-                        }} placeholder="enter tag" />
-                        <button type="submit">add</button>
-                    </form>
-                </div>
-                <Tags entries={item.tags} />
-            </div>
-        </li>
+    renderItems(listItems) {
+        if (listItems !== undefined || listItems.length > 0)
+            return listItems.map((item, index) => {
+                return (
+                    <li key={item.key}>
+                        <div>
+                            <input type="checkbox"
+                                onClick={() => this.strike(item)}
+                            />
+                            <div id={item.key}>
+                                {item.text}
+                            </div>
+                            <div className="header">
+                                <form key={item.key} data-id={index} onSubmit={this.addTag}>
+                                    <input data-id={index} ref={(a) => {
+                                        this._inputElement = a
+                                        this.item = item
+                                    }} placeholder="enter tag" />
+                                    <button type="submit">add</button>
+                                </form>
+                            </div>
+                            <Tags entries={item.tags} />
+                        </div>
+                    </li>
+                );
+            });
+            else {
+                return null;
+            }
     }
-
 
     render() {
         var todoEntries = this.props.entries;
-        var listItems = todoEntries.map(this.createTasks);
         return (
             <ul className="theList">
-                {listItems}
+                {this.renderItems(todoEntries)}
             </ul>
         );
     }
