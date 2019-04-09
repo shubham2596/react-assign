@@ -10,10 +10,6 @@ import Tags from '../Tags/Tags';
 
 class TodoItems extends Component {
 
-
-    // handleCheckboxChange = event => 
-    //     this.setState({ checked: event.target.checked })
-
     constructor(props) {
         super(props);
         this.state = {
@@ -24,12 +20,7 @@ class TodoItems extends Component {
         this.addTag = this.addTag.bind(this);
     }
 
-    // delete(key) {
-    //     this.props.delete(key);
-    // }
-
     strike(key) {
-        // this.strike
         this.setState({ checked: !this.state.checked })
         document.getElementById(key).style.textDecoration = 'line-through';
     }
@@ -38,56 +29,48 @@ class TodoItems extends Component {
     addTag(e) {
         if (this._inputElement.value !== "") {
             var newItem = this._inputElement.value;
+            var id = this._inputElement.dataset.id;
         
-            this.setState((prevState) => {
-                return {
-                    tags: prevState.tags.concat(newItem)
-                };
-            });
-
-            this._inputElement.value = "";
-        }    
+            var item = this.item;
+            item.tags = item.tags.concat(newItem)
+            this.props.addTag(item, id);
+        }  
         e.preventDefault();
 
     }
 
-    createTasks(item) {
+    createTasks(item, i) {
         return <li key={item.key}>
             <div id={item.key}>
                 <input type="checkbox"
                     onClick={() => this.strike(item.key)}
                 />
                 {item.text}
-                {/* <li>{item.tags}</li> */}
-                {/* {item.tags.map(t => {
-                    return <li>{t}</li>
-                })} */}
 
                 <div className="header">
                     <form onSubmit={this.addTag}>
-                        <input ref={(a) => this._inputElement = a} placeholder="enter tag">
-                        </input>
+                        <input data-id={i} ref={(a) => {
+                            this._inputElement = a
+                            this.item = item
+                        }} placeholder="enter tag" />
                         <button type="submit">add</button>
                     </form>
                 </div>
-
-                {/* {item.tags}={this.state.tags};
-                {console.log(item.tags)}; */}
-                <Tags entries={item} />
+                <Tags entries={item.tags} />
             </div>
         </li>
     }
 
+
     render() {
         var todoEntries = this.props.entries;
         var listItems = todoEntries.map(this.createTasks);
-
         return (
             <ul className="theList">
                 {listItems}
             </ul>
         );
     }
-};
+}
 
 export default TodoItems;

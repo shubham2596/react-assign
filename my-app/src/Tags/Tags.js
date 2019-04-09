@@ -18,7 +18,7 @@ class Tags extends Component {
         </li>
     }
     render(){
-        var todoEntries = this.props.entries.tags;
+        var todoEntries = this.props.entries;
         var listItems = todoEntries.map(this.createTags);
         return (
             <ul>

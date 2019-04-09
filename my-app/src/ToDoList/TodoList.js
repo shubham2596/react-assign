@@ -16,6 +16,7 @@ class TodoList extends Component {
             items: []
         };
         this.addItem = this.addItem.bind(this);
+        this.appendTag = this.appendTag.bind(this);
     }
 
     addItem(e) {
@@ -35,10 +36,17 @@ class TodoList extends Component {
             this._inputElement.value = "";
         }
 
-        console.log(this.state.items);
 
         e.preventDefault();
 
+    }
+
+    appendTag (item, id) {
+        let items = this.state.items;
+        items[id] = item;
+        this.setState({
+            items
+        })
     }
 
     render() {
@@ -52,6 +60,7 @@ class TodoList extends Component {
                     </form>
                 </div>
                 <TodoItems entries={this.state.items} 
+                addTag={this.appendTag}
                 />
             </div>
         );
