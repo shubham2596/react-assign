@@ -17,6 +17,7 @@ class TodoList extends Component {
         };
         this.addItem = this.addItem.bind(this);
         this.appendTag = this.appendTag.bind(this);
+        this.changeposition = this.changeposition.bind(this);
     }
 
     addItem(e) {
@@ -49,6 +50,26 @@ class TodoList extends Component {
         })
     }
 
+    changeposition(item,i){
+        let items = this.state.items;
+        let length = items.length;
+        var oldIndex = items.indexOf(item);
+        var newindex = i;
+        if(newindex===1){
+            newindex = length-1;
+        }
+        
+
+        var itemClone = items.slice();
+        itemClone.splice(oldIndex,1);
+        itemClone.splice(newindex,0,item);
+        
+        this.setState({
+            items : itemClone
+        })
+
+    }
+
     render() {
         return (
             <div className="todoListMain">
@@ -61,6 +82,7 @@ class TodoList extends Component {
                 </div>
                 <TodoItems entries={this.state.items} 
                 addTag={this.appendTag}
+                changeposition={this.changeposition}
                 />
             </div>
         );

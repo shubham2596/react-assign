@@ -20,12 +20,17 @@ class TodoItems extends Component {
         this.addTag = this.addTag.bind(this);
     }
 
-    strike(key) {
+    strike(item) {
         this.setState({ checked: !this.state.checked })
-        if(this.state.checked===false)
-        document.getElementById(key).style.textDecoration = 'line-through';
-        else 
-        document.getElementById(key).style.textDecoration = 'none';
+        if (this.state.checked === false) {
+            document.getElementById(item.key).style.textDecoration = 'line-through';
+            this.props.changeposition(item,1);
+        }
+        else {
+            document.getElementById(item.key).style.textDecoration = 'none';
+            this.props.changeposition(item,0);
+        }
+
     }
 
 
@@ -33,7 +38,6 @@ class TodoItems extends Component {
         if (this._inputElement.value !== "") {
             var newItem = this._inputElement.value;
             var id = this._inputElement.dataset.id;
-
             var item = this.item;
             item.tags = item.tags.concat(newItem)
             this.props.addTag(item, id);
@@ -46,7 +50,7 @@ class TodoItems extends Component {
         return <li key={item.key}>
             <div>
                 <input type="checkbox"
-                    onClick={() => this.strike(item.key)}
+                    onClick={() => this.strike(item)}
                 />
                 <div id={item.key}>
                     {item.text}
