@@ -22,7 +22,10 @@ class TodoItems extends Component {
 
     strike(key) {
         this.setState({ checked: !this.state.checked })
+        if(this.state.checked===false)
         document.getElementById(key).style.textDecoration = 'line-through';
+        else 
+        document.getElementById(key).style.textDecoration = 'none';
     }
 
 
@@ -30,23 +33,24 @@ class TodoItems extends Component {
         if (this._inputElement.value !== "") {
             var newItem = this._inputElement.value;
             var id = this._inputElement.dataset.id;
-        
+
             var item = this.item;
             item.tags = item.tags.concat(newItem)
             this.props.addTag(item, id);
-        }  
+        }
         e.preventDefault();
 
     }
 
     createTasks(item, i) {
         return <li key={item.key}>
-            <div id={item.key}>
+            <div>
                 <input type="checkbox"
                     onClick={() => this.strike(item.key)}
                 />
-                {item.text}
-
+                <div id={item.key}>
+                    {item.text}
+                </div>
                 <div className="header">
                     <form onSubmit={this.addTag}>
                         <input data-id={i} ref={(a) => {
